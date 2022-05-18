@@ -4,6 +4,7 @@ import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import Register from './Register';
 import Login from './Login';
 import Home from './Home';
+import './../scss/index.scss';
 
 function App() {
   return (

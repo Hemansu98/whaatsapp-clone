@@ -2,6 +2,9 @@
 import React, {useState, useEffect} from 'react'
 import {Link} from 'react-router-dom';
 import {Toast, ToastContainer} from 'react-bootstrap';
+
+import '../scss/Form.scss';
+
 function Register() {
   const [formData, setFormData] = useState({
     username: '',
@@ -50,8 +53,8 @@ function Register() {
   }
 
   return (
-    <div className="register__container">
-      <form onSubmit={handleSubmit}>
+    <div className="form__container">
+      <form onSubmit={handleSubmit} autoComplete="off">
         <h3 className="form__title">Register</h3>
         <input
           type="text"
