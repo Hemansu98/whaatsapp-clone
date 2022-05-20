@@ -4,6 +4,9 @@ import {Toast, ToastContainer} from 'react-bootstrap';
 
 import '../scss/Form.scss';
 
+import { loginRoute } from './../utils/APIRoutes';
+import axios from 'axios';
+
 function Login() {
   const [formData, setFormData] = useState({
     username: '',
@@ -26,10 +29,11 @@ function Login() {
     }
     return true;
   }
-  const handleSubmit = function(e) {
+  const handleSubmit = async function(e) {
     e.preventDefault();
     if(validateData()) {
-      console.log(formData);
+      let payload = { ...formData };
+      const { data } = await axios.post(loginRoute, payload);
     }
   }
 
