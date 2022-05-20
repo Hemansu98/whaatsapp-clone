@@ -1,7 +1,6 @@
-
 import React, {useState, useEffect} from 'react'
-import {Link} from 'react-router-dom';
-import {Toast, ToastContainer} from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom';
+import { Toast, ToastContainer } from 'react-bootstrap';
 import axios from 'axios';
 
 import '../scss/Form.scss';
@@ -19,6 +18,13 @@ function Register() {
     show: false,
     msg: ''
   });
+
+  const navigate = useNavigate();
+  useEffect(function() {
+    if(localStorage.getItem('chatter-box-user')) {
+      navigate('/');
+    }
+  }, []);
 
   const validateData = function() {
     if(formData.password != formData.confirmPassword) {
@@ -43,7 +49,6 @@ function Register() {
   const handleSubmit = async function(e) {
     e.preventDefault();
     if(validateData()) {
-      console.log(formData);
       try {
         let { username, email, password } = formData;
         let payload = {};
@@ -51,10 +56,18 @@ function Register() {
         payload['email'] = email;
         payload['password'] = password;
         const { data } = await  axios.post(registerRoute, payload);
+        localStorage.setItem('chatter-box-user', JSON.stringify(data.user));
+        localStorage.setItem('chatter-box-token', data.token);
+        navigate('/');
       }
       catch(e) {
         /*****  Handle Error Here *****/
         /* Use toast to show error occured */
+        setToast({
+          ...toast,
+          show: true,
+          msg: 'Internal Server Error. Please try again.!',
+        });
       }
     }
   }

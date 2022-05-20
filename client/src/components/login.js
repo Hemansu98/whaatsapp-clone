@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
-import {Link} from 'react-router-dom';
-import {Toast, ToastContainer} from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom';
+import { Toast, ToastContainer } from 'react-bootstrap';
 
 import '../scss/Form.scss';
 
@@ -18,6 +18,13 @@ function Login() {
     msg: ''
   });
 
+  const navigate = useNavigate();
+  useEffect(function() {
+    if(localStorage.getItem('chatter-box-user')) {
+      navigate('/');
+    }
+  }, []);
+
   const validateData = function() {
     if(!formData.password || !formData.username) {
       setToast({
@@ -34,6 +41,9 @@ function Login() {
     if(validateData()) {
       let payload = { ...formData };
       const { data } = await axios.post(loginRoute, payload);
+      localStorage.setItem('chatter-box-user', JSON.stringify(data.user));
+      localStorage.setItem('chatter-box-token', data.token);
+      navigate('/');
     }
   }
 
