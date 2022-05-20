@@ -18,7 +18,7 @@
         min-height: 60%;
         h3.form__title {
             font-size: 28px;
-            font-weight: 400px;
+            font-weight: bold;
             color: #AEFEFF;
         }
         input, button {
@@ -33,6 +33,8 @@
         button {
             background: #E04D01;
             color: #AEFEFF;
+            font-size: 14px;
+            // text-transform: uppercase;
         }
         .switch_to_login {
             color: #FFF;

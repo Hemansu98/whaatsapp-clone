@@ -2,8 +2,10 @@
 import React, {useState, useEffect} from 'react'
 import {Link} from 'react-router-dom';
 import {Toast, ToastContainer} from 'react-bootstrap';
+import axios from 'axios';
 
 import '../scss/Form.scss';
+import { registerRoute } from './../utils/APIRoutes';
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -38,10 +40,22 @@ function Register() {
     return true;
   }
 
-  const handleSubmit = function(e) {
+  const handleSubmit = async function(e) {
     e.preventDefault();
     if(validateData()) {
       console.log(formData);
+      try {
+        let { username, email, password } = formData;
+        let payload = {};
+        payload['username'] = username;
+        payload['email'] = email;
+        payload['password'] = password;
+        const { data } = await  axios.post(registerRoute, payload);
+      }
+      catch(e) {
+        /*****  Handle Error Here *****/
+        /* Use toast to show error occured */
+      }
     }
   }
 
