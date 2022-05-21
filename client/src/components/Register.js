@@ -58,7 +58,7 @@ function Register() {
         const { data } = await  axios.post(registerRoute, payload);
         localStorage.setItem('chatter-box-user', JSON.stringify(data.user));
         localStorage.setItem('chatter-box-token', data.token);
-        navigate('/');
+        navigate('/setAvatar');
       }
       catch(e) {
         /*****  Handle Error Here *****/

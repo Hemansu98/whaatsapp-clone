@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { Buffer } from 'buffer';
+import { Toast, ToastContainer } from 'react-bootstrap';
+import { setAvatarRoute  } from '../utils/APIRoutes'; 
 import './../scss/avatar.scss';
+import { useNavigate } from 'react-router-dom';
 
 export default function SetAvatar() {
   const avatarApi = 'https://api.multiavatar.com/'
   const [isLoading, setIsLoading] = useState(true);
   const [selectedAvatar, setSelectedAvatar] = useState(0);
   const [avatarList, setAvatarList] = useState([]);
-
+  const [toast, setToast] = useState({
+    show: false,
+    msg: ''
+  });
+  const navigate = useNavigate();
   useEffect(function() {
     let list = [];
     const fetchList = async function() {
@@ -28,17 +35,36 @@ export default function SetAvatar() {
     fetchList();
   }, []);
 
-  const handleClick =  function() {
+  const handleClick = async function() {
     if(!selectedAvatar) {
-      // show msg
+      setToast({...toast, 
+        show: true,
+        msg: 'Please select an avatar.!'
+      });
     } else {
-      // update avatar in backend
-    }
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 5000);
+      let selectedAvatarImg = avatarList[selectedAvatar];
+      setIsLoading(true);
+      try {
+        let id = JSON.parse(localStorage.getItem('chatter-box-user'))._id;
+        let token = localStorage.getItem('chatter-box-token');
+        await axios.patch(`${setAvatarRoute}/${id}`, 
+            { avatar: selectedAvatarImg },
+            { 
+              headers: {'Authorization': token, 'Content-type': 'arraybuffer' }, 
+            }
+          );
+          navigate('/');
+      }
+      catch(e) {
+        setToast({...toast, 
+          show: true, msg: 'Inernal Server Error.!'
+        });
+      }
+      finally {
+        setIsLoading(false);
+      }
 
+    }
   }
 
   return (
@@ -66,6 +92,19 @@ export default function SetAvatar() {
               <button className='submit__btn' onClick={handleClick}>Set Avatar</button>
             </div>
       }  
+      <ToastContainer position="bottom-end" >
+        <Toast 
+          onClose={() => setToast({...toast, show: false})} 
+          show={toast.show} 
+          delay={2000}
+          autohide
+          >
+          <Toast.Header>
+            <strong className="me-auto" style={{color: 'red', fontSize: '16px'}}>Error</strong>
+          </Toast.Header>
+          <Toast.Body className="toast-body">{toast.msg}</Toast.Body>
+        </Toast>
+      </ToastContainer>
     </div>
   )
 }
