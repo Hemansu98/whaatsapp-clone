@@ -21,15 +21,18 @@ router.patch('/setavatar/:id',
         try {
             let user = await User.findById(id);
             if(!user) 
-                res.status(404).json({ msg: 'User not found.!'});
+                return res.status(404).json({ msg: 'User not found.!'});
+            if(user['isAvatarSet']) {
+                return res.status(200).json({msg: 'Avatar already set'});
+            }
             let payload = {};
             payload['isAvatarSet'] = true;
             payload['avatar'] = avatar;
             await User.updateOne({_id: id}, {$set: payload}, {new : true});
-            return res.status(200);
+            return res.status(200).json({msg: 'User avatar has been set'});
         }
         catch(err) {
-            res.status(503).json({ msg: 'Internal Server Error.!' });
+            return res.status(503).json({ msg: 'Internal Server Error.!' });
         }
 });
 
