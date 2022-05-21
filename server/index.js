@@ -37,7 +37,7 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.use('/', routes);
+app.use('/api', routes);
 
 const server = app.listen(process.env.PORT, () => {
     console.log(`App is listening at ${process.env.PORT}`);
