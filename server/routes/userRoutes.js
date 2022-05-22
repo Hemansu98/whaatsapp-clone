@@ -36,4 +36,24 @@ router.patch('/setavatar/:id',
         }
 });
 
+router.get('/contacts/:id',
+    passport.authenticate('jwt', {session: false}),
+    async (req, res) => {
+        const id = req.params['id'];
+        try {
+            let users = await User.find({_id: {$nin: [id]}})
+                .select([
+                    "email",
+                    "username",
+                    "avatar",
+                    "_id",
+                ]);
+            
+            res.status(200).json({users});
+        }
+        catch(error) {
+            res.status(503).json({error});
+        }
+});
+
 module.exports = router;
