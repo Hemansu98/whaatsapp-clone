@@ -43,7 +43,7 @@ function Login() {
       const { data } = await axios.post(loginRoute, payload);
       localStorage.setItem('chatter-box-user', JSON.stringify(data.user));
       localStorage.setItem('chatter-box-token', data.token);
-      navigate('/');
+      navigate('/setAvatar');
     }
   }
 

@@ -17,6 +17,10 @@ export default function SetAvatar() {
   });
   const navigate = useNavigate();
   useEffect(function() {
+    if(JSON.parse(localStorage.getItem('chatter-box-user'))?.isAvatarSet) 
+      navigate('/');
+  }, []);
+  useEffect(function() {
     let list = [];
     const fetchList = async function() {
       let promiseArr = [];
@@ -53,6 +57,12 @@ export default function SetAvatar() {
               headers: {'Authorization': token, 'Content-type': 'arraybuffer' }, 
             }
           );
+          let user = JSON.parse(localStorage.getItem('chatter-box-user'));
+          localStorage.setItem('chatter-box-user', JSON.stringify({
+            ...user, 
+            isAvatarSet: true, 
+            avatar: selectedAvatarImg
+          }));
           navigate('/');
       }
       catch(e) {
