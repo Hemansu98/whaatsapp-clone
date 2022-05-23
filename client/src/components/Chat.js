@@ -17,27 +17,25 @@ export default function Chat() {
       let user = await localStorage.getItem('chatter-box-user');
       if(!user) {
         navigate('/login');
-        return;
-      }
-      setIsLoading(true);
-      user = JSON.parse(user);
-      if(!user?.isAvatarSet) {
+      } else if(!JSON.parse(user)?.isAvatarSet) {
         navigate('/setAvatar');
-        return;
-      }
-      setCurrentUser(user);
-      try {
-        const { data } = await axios.get(`${getContactListRoute}/${user._id}`, {
-            headers: {'Authorization': localStorage.getItem('chatter-box-token')},
-          }
-        )
-        setContactList(data.users);
-      }
-      catch(e) {
-        // show toast msg to refresh
-      }
-      finally {
-        setIsLoading(false);
+      } else {
+        user = JSON.parse(user);
+        setIsLoading(true);
+        setCurrentUser(user);
+        try {
+          const { data } = await axios.get(`${getContactListRoute}/${user._id}`, {
+              headers: {'Authorization': localStorage.getItem('chatter-box-token')},
+            }
+          )
+          setContactList(data.users);
+        }
+        catch(e) {
+          // show toast msg to refresh
+        }
+        finally {
+          setIsLoading(false);
+        }
       }
     }
     fetchContactList();
