@@ -2,14 +2,15 @@
     overflow: hidden;
     display: grid;
     grid-template-rows: 10% 75% 15%;
-    margin: 6px;
     .header {
         display: flex;
         align-items: center;
         font-size: 32px; 
         font-weight: bold;     
         color: #E04D01; 
+        padding-left: 6px;
         border-bottom: 0.1px solid #646a6a;
+        z-index: 1000;
     }
     .list__container {
         display: flex;
@@ -34,7 +35,7 @@
             align-items: center;
             border: 0.1px solid #AEFEFF;
             border-radius: 12px;
-            margin: 6px 12px 6px 0px;
+            margin: 6px 8px 6px 8px;
             padding: 6px;
             cursor: pointer;
             img {

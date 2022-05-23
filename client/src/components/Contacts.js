@@ -25,10 +25,10 @@ export default function Contacts({ contacts, currentUser, selectedContact, setSe
         }
         </div>
         <div className='footer'>
-            <span>{currentUser.username}</span>
+            <span>{currentUser?.username}</span>
             <img 
                 className='avatar__img'
-                src={`data:image/svg+xml;base64,${currentUser.avatar}`} />
+                src={`data:image/svg+xml;base64,${currentUser?.avatar}`} />
         </div>
     </div>
   )

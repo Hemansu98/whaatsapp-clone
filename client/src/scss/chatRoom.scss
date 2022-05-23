@@ -1,0 +1,35 @@
+.chatRoom__container {
+    border-left: 0.1px solid #646a6a;
+    display: grid;
+    grid-template-rows: 10% 90%;
+    grid-template-columns: 1fr;
+    .header__section {
+        width: 100%;
+        background-color: #E04D01;
+        border-bottom: 0.1px solid #AEFEFF;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0px 12px;
+        .power__icon {
+            color: #000;
+            cursor: pointer;
+        }
+        img {
+            width: 2.5rem;
+            height: 2.5rem;
+        }
+        .username {
+            margin-left: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #AEFEFF;
+        }
+    }
+    .float-right {
+        justify-content: flex-end;
+    }
+    .main__section {
+
+    }
+}

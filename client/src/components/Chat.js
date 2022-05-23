@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import './../scss/chat.scss';
-import Contacts from './Contacts';
-import ChatRoom from './ChatRoom';
 import { useNavigate } from 'react-router-dom';
 import { getContactListRoute } from '../utils/APIRoutes';
+import Contacts from './Contacts';
+import ChatRoom from './ChatRoom';
 export default function Chat() {
   const [contactList, setContactList] = useState([]);
   const [selectedContact, setSelectedContact] = useState(null);
@@ -12,15 +12,20 @@ export default function Chat() {
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
-  useState(function() {
-    if(!localStorage.getItem('chatter-box-user')) {
-      navigate('/login');
-    }
-    setIsLoading(true);
-    const user = JSON.parse(localStorage.getItem('chatter-box-user'));
-    if(!user.isAvatarSet) navigate('/setAvatar');
-    setCurrentUser(user);
+  useEffect(function() {
     const fetchContactList = async function() {
+      let user = await localStorage.getItem('chatter-box-user');
+      if(!user) {
+        navigate('/login');
+        return;
+      }
+      setIsLoading(true);
+      user = JSON.parse(user);
+      if(!user?.isAvatarSet) {
+        navigate('/setAvatar');
+        return;
+      }
+      setCurrentUser(user);
       try {
         const { data } = await axios.get(`${getContactListRoute}/${user._id}`, {
             headers: {'Authorization': localStorage.getItem('chatter-box-token')},
@@ -43,14 +48,14 @@ export default function Chat() {
     {
       isLoading ?
       <img src="/gif/7Mpw.gif" alt="loader"></img> :
-      <div className="container">
+      <div className="main__chat__container">
         <Contacts 
           contacts={contactList} 
           currentUser={currentUser}
           selectedContact={selectedContact}
           setSelectedContact={setSelectedContact}
         />
-        <ChatRoom />
+        <ChatRoom selectedContact={selectedContact}/>
       </div>
     }
     </div>
